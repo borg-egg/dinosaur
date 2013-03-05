@@ -1,4 +1,3 @@
-6
 # -*- coding: utf-8 -*-
 #Autor: Programmierer: Julian Schmelzinger, Gabriel Felder, Linus Heimböck, Valentin Nussbaumer, Tim Feldmann; Grafiker: Oskar Riedmann, Niklas Schwärzler
 #Programmname: Jump'n'Run
@@ -24,7 +23,10 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 128)
 RED = (255, 0, 0)
 MEDIUMBLUE= ( 0, 0, 205)
-TEXT_COLOR=(250,69,19)
+TEXT=(250,69,19)
+
+#Directory
+IMG_DIR = "artwork/Level_1_used/"
 
 def init_game():
 	'''
@@ -49,34 +51,45 @@ def init_game():
 	object_x = -200
 	
 init_game()	
-#Screen_text
+#Writing
 fontObj = pygame.font.Font('CHERC___.TTF', 32)
 
 #Variablen
-background_x = 0		
+background_x = 0
+#walker1_x = 0
+#walker1_movement = 0
+		
 y_offset = 0
 y_downset = 0
-#textx = 0
-#texty = 0
+#switch = 0
+textx = 0
+texty = 0
 	
+
 
 intro_running = True
 
 #Img load
-backgroundIMG = pygame.image.load("wood1.png").convert()
+backgroundIMG = pygame.image.load(IMG_DIR + "wood1.png").convert()
 
-img_intro = pygame.image.load('intro.png').convert()
+img_intro = pygame.image.load(IMG_DIR + 'intro.png').convert()
 
-img_duck = pygame.image.load('flugsaurier1.png').convert_alpha()
-img_explosion=pygame.image.load('explosion1.png').convert_alpha()
-img_explosion=pygame.transform.scale(img_explosion, (img_explosion.get_width()*1, img_explosion.get_height()*1))
-img_stone=pygame.image.load('rollingstone.png').convert_alpha()
+img_flying_saurian = pygame.image.load(IMG_DIR + 'flying_saurian.png').convert_alpha()
+img_flying_saurian = pygame.transform.scale(img_flying_saurian, (int(img_flying_saurian.get_width()/8), int(img_flying_saurian.get_height()/8)))
+
+img_crash=pygame.image.load(IMG_DIR + 'crash.png').convert_alpha()
+img_crash=pygame.transform.scale(img_crash, (img_crash.get_width()*1, img_crash.get_height()*1))
+
+img_stone=pygame.image.load(IMG_DIR + 'rollingstone.png').convert_alpha()
 img_stone=pygame.transform.scale(img_stone, (int(img_stone.get_width()/2), int(img_stone.get_height()/2)))
-img_duck=pygame.transform.scale(img_duck, (int(img_duck.get_width()/8), int(img_duck.get_height()/8)))
-img_list = [(img_stone, 360, True), (img_duck, 290, False)] # (image, y, rotate)
-walkers = []
-img_game_over= pygame.image.load('endbild.png').convert_alpha()
+
+img_game_over= pygame.image.load(IMG_DIR + 'end.png').convert_alpha()
 img_game_over=pygame.transform.scale(img_game_over, (int(img_game_over.get_width()*1), int(img_game_over.get_height()*1)))
+
+img_list = [(img_stone, 360, True), (img_flying_saurian, 290, False)] # (image, y, rotate)
+walkers = []
+
+#sounds
 pygame.mixer.music.load('sounds/spiel.mp3')
 pygame.mixer.music.play(-1)
 game_end=pygame.mixer.Sound('sounds/gameover.ogg')
@@ -84,7 +97,7 @@ snd_crash = pygame.mixer.Sound('sounds/crash.ogg')
 snd_jump = pygame.mixer.Sound('sounds/jump.ogg')
 
 for filename in ( 'dino1.png', 'dino2.png'):
-	new_walker = pygame.image.load(filename).convert_alpha()
+	new_walker = pygame.image.load(IMG_DIR + filename).convert_alpha()
 	new_walker = pygame.transform.scale (new_walker, (new_walker.get_width() /5  , new_walker.get_height() /5))
 	new_walker = pygame.transform.flip(new_walker, True, False)
 	walkers.append(new_walker)
@@ -98,27 +111,81 @@ object, object_y, rotate_obj = random.choice(img_list)
 object_x= DISPLAYSURF.get_width() 
 
 snd_running = False
+
+def process_and_execute_quit_event(event):
+	if event.type == QUIT:										
+		pygame.quit()													
+		sys.exit()
+
+def check_for_start():
+	for event in pygame.event.get():
+		process_and_execute_quit_event(event)	 
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			pos = event.pos
+			x = pos[0]
+			y = pos[1]
+			if x in range(397, 600) and y in range(510, 589):
+				return True
+	
+	return False
+	
+def show_intro():
+		DISPLAYSURF.blit(img_intro, (0,0))
+		pygame.display.flip()
+
+def set_walker_y_offset(offset):
+	y_offset = offset
+	global y_offset
+
+def process_event(event):
+	process_and_execute_quit_event(event)
+	               
+	if event.type == pygame.USEREVENT:
+		set_walker_y_offset(0)
+		pygame.time.set_timer(pygame.USEREVENT, 0)
+	
+	if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_UP:
+			snd_jump.play()
+			y_offset = (current_walker.get_height() + current_walker.get_height()/20)
+			set_walker_y_offset(y_offset)
+			pygame.time.set_timer(pygame.USEREVENT, 1000)
+			
+	if event.type == pygame.KEYUP:
+		if event.key == pygame.K_UP:
+			set_walker_y_offset(0)
+			
+	if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_DOWN:
+			y_offset =  - current_walker.get_height()/2
+			set_walker_y_offset(y_offset)
+			pygame.time.set_timer(pygame.USEREVENT, 1000) 
+			
+	if event.type == pygame.KEYUP:
+		if event.key == pygame.K_DOWN:
+			y_offset = 0
+			
+	if event.type == pygame.KEYDOWN:
+		if event.key == pygame.K_RIGHT:
+			walker1_movement = 5
+			#walker1_x = walker1_x + 20
+			
+	if event.type == pygame.KEYUP:
+		if event.key == pygame.K_RIGHT:
+			#walker1_x = 0
+			walker1_movement = -5
+		
+		
+		
 	
 while True: # the main game loop
 	
 	if intro_running == True:
-		# blit intro
-		#intro_running = Fal
-		DISPLAYSURF.blit(img_intro, (0,0))
-		pygame.display.flip ()
-		for event in pygame.event.get():										### neu ### 
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				pos = event.pos
-				x = pos[0]
-				y = pos[1]
-				if x in range(397, 600) and y in range(510, 589):
-					intro_running = False
-				#(397, 510)
-				#(600, 589)
-				print pos
-			elif event.type == QUIT:												### neu ###
-				pygame.quit()													### neu ###
-				sys.exit()		
+		show_intro()
+		start_program = check_for_start()
+		intro_running = not start_program
+		
+				
 		
 	elif life_x >= 1:		
 	
@@ -127,7 +194,7 @@ while True: # the main game loop
 		
 		DISPLAYSURF.blit(backgroundIMG, (background_x,0))
 		DISPLAYSURF.blit(backgroundIMG, (backgroundIMG.get_width()  + background_x,0))
-		textSurfaceObj = fontObj.render('Gelaufene Meter:  ' + str(int(switch)) , True, TEXT_COLOR)
+		textSurfaceObj = fontObj.render('Gelaufene Meter:  ' + str(int(switch)) , True, TEXT)
 		
 		counter += 1
 		delayer = 5
@@ -157,13 +224,13 @@ while True: # the main game loop
 		r_moving_object = DISPLAYSURF.blit(object_draw,(object_x,object_y))
 		switch +=0.1
 		if r_moving_object.colliderect(r_walker) == True:
-			#if snd_running == False or (getattr(snd_running, 'get_busy') and snd_running.get_busy()):
+			
 			snd_crash.play()
-			DISPLAYSURF.blit(img_explosion,(100,60))
-			life_x-= 3.5                 ### neu ###
-			if life_x < 10:					### neu ###
-				print("Game Over!")			### neu ###
-												### neu ###
+			DISPLAYSURF.blit(img_crash,(100,60))
+			life_x-= 3.5                 
+			if life_x < 10:					
+				print("Game Over!")			
+												
 				
 		pygame.display.flip ()
 		background_x -= 2 # background_x = background_x -1
@@ -192,56 +259,19 @@ while True: # the main game loop
 		pygame.display.flip ()
 		background_x -= 2 # background_x = background_x -1
 		
-		
 		for event in pygame.event.get():
+			process_event(event)
 			
-			if event.type == pygame.USEREVENT:
-				y_offset = 0
-				pygame.time.set_timer(pygame.USEREVENT, 0)
-			
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_UP:
-					snd_jump.play()
-					y_offset = (current_walker.get_height() + current_walker.get_height()/20)
-					pygame.time.set_timer(pygame.USEREVENT, 1000)
-					
-			if event.type == pygame.KEYUP:
-				if event.key == pygame.K_UP:
-					y_offset = 0
-					
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_DOWN:
-					y_offset =  - current_walker.get_height()/2
-					pygame.time.set_timer(pygame.USEREVENT, 1000) 
-					
-			if event.type == pygame.KEYUP:
-				if event.key == pygame.K_DOWN:
-					y_offset = 0
-					
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RIGHT:
-					walker1_movement = 5
-					#walker1_x = walker1_x + 20
-					
-			if event.type == pygame.KEYUP:
-				if event.key == pygame.K_RIGHT:
-					#walker1_x = 0
-					walker1_movement = -5
-					
 				
-			if event.type == QUIT:
-				pygame.quit()
-				sys.exit()
-				455
 		pygame.display.update()
 		fpsClock.tick(FPS)
 		
 		
-	else:																		### neu ###
+	else:																		
 		DISPLAYSURF.blit(img_game_over, (0,0))
 		DISPLAYSURF.blit(textSurfaceObj,(320,150))
 		
-		for event in pygame.event.get():										### neu ### 
+		for event in pygame.event.get():										 
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				pos = event.pos
 				x = pos[0]
@@ -254,9 +284,9 @@ while True: # the main game loop
 					
 				print pos		
 			elif event.type == QUIT:
-				pygame.quit()													### neu ###
-				sys.exit()														### neu ###
+				pygame.quit()													
+				sys.exit()														
 				        
-		game_end.play()																		### neu ###
-		pygame.display.flip()													### neu ###
+		game_end.play()																		
+		pygame.display.flip()													
 				

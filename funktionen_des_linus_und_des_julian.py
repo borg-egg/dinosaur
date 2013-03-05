@@ -25,6 +25,9 @@ RED = (255, 0, 0)
 MEDIUMBLUE= ( 0, 0, 205)
 TEXT=(250,69,19)
 
+#Directory
+IMG_DIR = "artwork/Level_1_used/"
+
 def init_game():
 	'''
 	initalize game and set all necessary variables
@@ -67,20 +70,26 @@ texty = 0
 intro_running = True
 
 #Img load
-backgroundIMG = pygame.image.load("wood1.png").convert()
+backgroundIMG = pygame.image.load(IMG_DIR + "wood1.png").convert()
 
-img_intro = pygame.image.load('intro.png').convert()
+img_intro = pygame.image.load(IMG_DIR + 'intro.png').convert()
 
-img_duck = pygame.image.load('flugsaurier1.png').convert_alpha()
-img_explosion=pygame.image.load('explosion1.png').convert_alpha()
-img_explosion=pygame.transform.scale(img_explosion, (img_explosion.get_width()*1, img_explosion.get_height()*1))
-img_stone=pygame.image.load('rollingstone.png').convert_alpha()
+img_flying_saurian = pygame.image.load(IMG_DIR + 'flying_saurian.png').convert_alpha()
+img_flying_saurian = pygame.transform.scale(img_flying_saurian, (int(img_flying_saurian.get_width()/8), int(img_flying_saurian.get_height()/8)))
+
+img_crash=pygame.image.load(IMG_DIR + 'crash.png').convert_alpha()
+img_crash=pygame.transform.scale(img_crash, (img_crash.get_width()*1, img_crash.get_height()*1))
+
+img_stone=pygame.image.load(IMG_DIR + 'rollingstone.png').convert_alpha()
 img_stone=pygame.transform.scale(img_stone, (int(img_stone.get_width()/2), int(img_stone.get_height()/2)))
-img_duck=pygame.transform.scale(img_duck, (int(img_duck.get_width()/8), int(img_duck.get_height()/8)))
-img_list = [(img_stone, 360, True), (img_duck, 290, False)] # (image, y, rotate)
-walkers = []
-img_game_over= pygame.image.load('endbild.png').convert_alpha()
+
+img_game_over= pygame.image.load(IMG_DIR + 'end.png').convert_alpha()
 img_game_over=pygame.transform.scale(img_game_over, (int(img_game_over.get_width()*1), int(img_game_over.get_height()*1)))
+
+img_list = [(img_stone, 360, True), (img_flying_saurian, 290, False)] # (image, y, rotate)
+walkers = []
+
+#sounds
 pygame.mixer.music.load('sounds/spiel.mp3')
 pygame.mixer.music.play(-1)
 game_end=pygame.mixer.Sound('sounds/gameover.ogg')
@@ -88,7 +97,7 @@ snd_crash = pygame.mixer.Sound('sounds/crash.ogg')
 snd_jump = pygame.mixer.Sound('sounds/jump.ogg')
 
 for filename in ( 'dino1.png', 'dino2.png'):
-	new_walker = pygame.image.load(filename).convert_alpha()
+	new_walker = pygame.image.load(IMG_DIR + filename).convert_alpha()
 	new_walker = pygame.transform.scale (new_walker, (new_walker.get_width() /5  , new_walker.get_height() /5))
 	new_walker = pygame.transform.flip(new_walker, True, False)
 	walkers.append(new_walker)
@@ -217,7 +226,7 @@ while True: # the main game loop
 		if r_moving_object.colliderect(r_walker) == True:
 			
 			snd_crash.play()
-			DISPLAYSURF.blit(img_explosion,(100,60))
+			DISPLAYSURF.blit(img_crash,(100,60))
 			life_x-= 3.5                 
 			if life_x < 10:					
 				print("Game Over!")			

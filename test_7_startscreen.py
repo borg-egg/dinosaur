@@ -1,4 +1,3 @@
-6
 # -*- coding: utf-8 -*-
 #Autor: Programmer: Julian Schmelzinger, Gabriel Felder, Linus Heimböck, Valentin Nussbaumer, Tim Feldmann; Grafiker: Oskar Riedmann, Niklas Schwärzler
 #Programmname: Jump'n'Run
