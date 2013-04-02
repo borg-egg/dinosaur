@@ -147,7 +147,7 @@ while True: # the main game loop
 		elif walker1_x >= DISPLAYSURF.get_width() - current_walker.get_width() and walker1_movement > 0:
 			pass
 		else:
-			walker1_x += walker1_movement # walker1_x = walker1_x + walker1_movement
+			walker1_x += walker1_movement 
 			
 		if background_x == -backgroundIMG.get_width() :
 			background_x = 0

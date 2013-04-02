@@ -57,9 +57,10 @@ fontObj = pygame.font.Font('CHERC___.TTF', 32)
 #Variablen
 background_x = 0
 #walker1_x = 0
-#walker1_movement = 0
+walker1_movement = 0
 		
 y_offset = 0
+x_offset=0
 y_downset = 0
 #switch = 0
 textx = 0
@@ -136,13 +137,17 @@ def show_intro():
 def set_walker_y_offset(offset):
 	y_offset = offset
 	global y_offset
+	
+def set_walker_x_offset(offset):
+	x_offset = offset
+	global x_offset
 
 def process_event(event):
 	process_and_execute_quit_event(event)
 	               
 	if event.type == pygame.USEREVENT:
 		set_walker_y_offset(0)
-		pygame.time.set_timer(pygame.USEREVENT, 0)
+		pygame.time.set_timer(pygame.USEREVENT, 0) # disable event timer
 	
 	if event.type == pygame.KEYDOWN:
 		if event.key == pygame.K_UP:
@@ -163,12 +168,21 @@ def process_event(event):
 			
 	if event.type == pygame.KEYUP:
 		if event.key == pygame.K_DOWN:
-			y_offset = 0
+			set_walker_y_offset(0)
+			
 			
 	if event.type == pygame.KEYDOWN:
 		if event.key == pygame.K_RIGHT:
+			print "key down"
 			walker1_movement = 5
-			#walker1_x = walker1_x + 20
+			global walker1_movement
+					
+	if event.type == pygame.KEYUP:
+		if event.key == pygame.K_RIGHT:
+			walker1_movement = -5
+			
+			
+			
 			
 	if event.type == pygame.KEYUP:
 		if event.key == pygame.K_RIGHT:
@@ -204,12 +218,13 @@ while True: # the main game loop
 		
 		img_life= pygame.draw.rect(DISPLAYSURF,(255, 0, 0 ), (10, 10, life_x ,25))
 		
+		print "walker1", walker1_movement
 		if walker1_x < 80 and walker1_movement < 0:
 			pass
 		elif walker1_x >= DISPLAYSURF.get_width() - current_walker.get_width() and walker1_movement > 0:
 			pass
 		else:
-			walker1_x += walker1_movement # walker1_x = walker1_x + walker1_movement
+			walker1_x += walker1_movement 
 			
 		if background_x == -backgroundIMG.get_width() :
 			background_x = 0
