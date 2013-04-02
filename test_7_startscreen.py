@@ -107,11 +107,10 @@ snd_running = False
 while True: # the main game loop
 	
 	if intro_running == True:
-		# blit intro
-		#intro_running = Fal
+		
 		DISPLAYSURF.blit(img_intro, (0,0))
 		pygame.display.flip ()
-		for event in pygame.event.get():										### neu ### 
+		for event in pygame.event.get():										
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				pos = event.pos
 				x = pos[0]
@@ -121,8 +120,8 @@ while True: # the main game loop
 				#(397, 510)
 				#(600, 589)
 				print pos
-			elif event.type == QUIT:												### neu ###
-				pygame.quit()													### neu ###
+			elif event.type == QUIT:												
+				pygame.quit()													
 				sys.exit()		
 		
 	elif life_x >= 1:		
@@ -147,7 +146,7 @@ while True: # the main game loop
 		elif walker1_x >= DISPLAYSURF.get_width() - current_walker.get_width() and walker1_movement > 0:
 			pass
 		else:
-			walker1_x += walker1_movement # walker1_x = walker1_x + walker1_movement
+			walker1_x += walker1_movement 
 			
 		if background_x == -backgroundIMG.get_width() :
 			background_x = 0
@@ -156,22 +155,22 @@ while True: # the main game loop
 		object_x-= speed
 		object_draw = object
 		if counter % 4 == 0 and rotate_obj == True:
-			#print "rotate!!!!"
+			
 			object_draw = pygame.transform.rotate(object, -180) 	
 		
 		r_moving_object = DISPLAYSURF.blit(object_draw,(object_x,object_y))
 		switch +=0.1
 		if r_moving_object.colliderect(r_walker) == True:
-			#if snd_running == False or (getattr(snd_running, 'get_busy') and snd_running.get_busy()):
+			
 			snd_crash.play()
 			DISPLAYSURF.blit(img_explosion,(100,60))
-			life_x-= 3.5                 ### neu ###
-			if life_x < 10:					### neu ###
-				print("Game Over!")			### neu ###
-												### neu ###
+			life_x-= 3.5                
+			if life_x < 10:					
+				print("Game Over!")			
+												
 				
 		pygame.display.flip ()
-		background_x -= 2 # background_x = background_x -1
+		background_x -= 2 
 		
 		DISPLAYSURF.blit(textSurfaceObj, (DISPLAYSURF.get_width()/2 - textSurfaceObj.get_width()/2, 0))
 		
@@ -191,11 +190,12 @@ while True: # the main game loop
 		if object_x < -100:
 			object, object_y,rotate_obj = random.choice(img_list)
 			object_x = 890
-			speed = random.randint(5, 25)
+			 
+			speed = random.randint(5, 12)
 		
 		
 		pygame.display.flip ()
-		background_x -= 2 # background_x = background_x -1
+		background_x -= 2 
 		
 		
 		for event in pygame.event.get():
@@ -242,11 +242,11 @@ while True: # the main game loop
 		fpsClock.tick(FPS)
 		
 		
-	else:																		### neu ###
+	else:																		
 		DISPLAYSURF.blit(img_game_over, (0,0))
 		DISPLAYSURF.blit(textSurfaceObj,(320,150))
 		
-		for event in pygame.event.get():										### neu ### 
+		for event in pygame.event.get():										 
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				pos = event.pos
 				x = pos[0]
@@ -259,9 +259,8 @@ while True: # the main game loop
 					
 				print pos		
 			elif event.type == QUIT:
-				pygame.quit()													### neu ###
-				sys.exit()														### neu ###
+				pygame.quit()													
+				sys.exit()														
 				        
-		game_end.play()																		### neu ###
-		pygame.display.flip()													### neu ###
-				
+		game_end.play()																		
+		pygame.display.flip()												
