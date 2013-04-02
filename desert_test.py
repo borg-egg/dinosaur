@@ -26,6 +26,7 @@ MEDIUMBLUE= ( 0, 0, 205)
 TEXT_COLOR=(250,69,19)
 
 IMG_DIR = "artwork/Level_1_used/"
+IMG_DIR_LEVEL2 = "artwork/Level_2_used/"
 
 def init_game():
 	'''
@@ -68,16 +69,16 @@ texty = 0
 intro_running = True
 
 #Img load
-backgroundIMG = pygame.image.load(IMG_DIR + "wood1.png").convert()
+backgroundIMG = pygame.image.load(IMG_DIR_LEVEL2 + "desert.png").convert()
 
 img_intro = pygame.image.load(IMG_DIR + 'intro.png').convert()
 
-img_duck = pygame.image.load(IMG_DIR + 'flying_saurian.png').convert_alpha()
+img_duck = pygame.image.load(IMG_DIR_LEVEL2 + 'chip.png').convert_alpha()
 img_explosion=pygame.image.load(IMG_DIR + 'crash.png').convert_alpha()
 img_explosion=pygame.transform.scale(img_explosion, (img_explosion.get_width()*1, img_explosion.get_height()*1))
-img_stone=pygame.image.load(IMG_DIR + 'rollingstone.png').convert_alpha()
-img_stone=pygame.transform.scale(img_stone, (int(img_stone.get_width()/2), int(img_stone.get_height()/2)))
-img_duck=pygame.transform.scale(img_duck, (int(img_duck.get_width()/8), int(img_duck.get_height()/8)))
+img_stone=pygame.image.load(IMG_DIR_LEVEL2 + 'chap.png').convert_alpha()
+img_stone=pygame.transform.scale(img_stone, (int(img_stone.get_width()/10), int(img_stone.get_height()/10)))
+img_duck=pygame.transform.scale(img_duck, (int(img_duck.get_width()/10), int(img_duck.get_height()/10)))
 img_list = [(img_stone, 360, True), (img_duck, 290, False)] # (image, y, rotate)
 walkers = []
 img_game_over= pygame.image.load(IMG_DIR + 'end.png').convert_alpha()
@@ -154,9 +155,9 @@ while True: # the main game loop
 		# draw moving object
 		object_x-= speed
 		object_draw = object
-		if counter % 4 == 0 and rotate_obj == True:
+		#if counter % 4 == 0 and rotate_obj == True:
 			
-			object_draw = pygame.transform.rotate(object, -180) 	
+			#object_draw = pygame.transform.rotate(object, -180) 	
 		
 		r_moving_object = DISPLAYSURF.blit(object_draw,(object_x,object_y))
 		switch +=0.1
@@ -190,9 +191,8 @@ while True: # the main game loop
 		if object_x < -100:
 			object, object_y,rotate_obj = random.choice(img_list)
 			object_x = 890
-			 
-			speed = random.randint(5, 12)
-		
+			#speed = random.randint(5, 25)
+			speed= 5
 		
 		pygame.display.flip ()
 		background_x -= 2 
