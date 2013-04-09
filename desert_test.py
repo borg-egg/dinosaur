@@ -69,7 +69,7 @@ texty = 0
 intro_running = True
 
 #Img load
-backgroundIMG = pygame.image.load(IMG_DIR_LEVEL2 + "desert.png").convert()
+backgroundIMG = pygame.image.load(IMG_DIR_LEVEL2 + "desert2.png").convert()
 
 img_intro = pygame.image.load(IMG_DIR + 'intro.png').convert()
 
