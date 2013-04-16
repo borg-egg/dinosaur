@@ -263,7 +263,7 @@ while True: # the main game loop
 			
 		object_x-= speed	
 		switch +=0.1
-			
+		
 		
 		if object_x < -100:
 			object, object_y,rotate_obj = random.choice(img_list)
