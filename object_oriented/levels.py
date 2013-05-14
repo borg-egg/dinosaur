@@ -29,6 +29,7 @@ class Level(object):
 class WoodLevel(Level):
 	def set_up(self):
 		self.set_background_img('../artwork/Level_1_used/wood1.png')
+		
 
 
 # for testing stuff

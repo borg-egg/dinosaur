@@ -59,7 +59,7 @@ class App(cevent.CEvent):
                 self.on_event(event)
             self.on_loop()
             self.on_render()
-            clock.tick(40)
+            clock.tick(35)
         self.on_cleanup()
  
 if __name__ == "__main__" :

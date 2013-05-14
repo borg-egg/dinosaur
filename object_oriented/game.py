@@ -19,24 +19,26 @@ class Game(object):
         '''
         paint the whole level, with moving background, dinosaur and enemies
         '''
-		
-        self.screen.blit(self.level.background_img,(self.background_img_x,0))
-        # TODO: make sure that -if necessary- the background is stitched!
         
-        self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
+        self.screen.blit(self.level.background_img, (self.background_img_x,0))
+        if abs(self.background_img_x) > self.level.background_img.get_width() - self.screen.get_width():
+			self.screen.blit(self.level.background_img, (self.background_img_x + self.level.background_img.get_width(),0))
+        # TO-DO: make sure that -if necessary- the background is stitched!
+        
+        #self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
         #self.screen.blit(self.enemy.picture, self.enemy.rect)
     
     def next_step(self):
-        self.erase_all()
+        #self.erase_all()
         self.scroll_background()
     
     def erase_all(self):
         self.screen.fill( (0, 0, 0) )
         
     def scroll_background(self):
-        BACKGROUND_IMAGE_SPEED = 3  # in pixel
+        BACKGROUND_IMAGE_SPEED = 9  # in pixel
         self.background_img_x -= BACKGROUND_IMAGE_SPEED
-        if self.background_img_x < -(self.level.background_img.get_width() - self.screen.get_width()):
+        if self.background_img_x < -self.level.background_img.get_width():
             self.background_img_x = 0
 	
     def next_level(self):
