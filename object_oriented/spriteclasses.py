@@ -6,11 +6,14 @@ class Dinosaur(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         image_1 = pygame.image.load('artwork/dino1.png').convert_alpha()
         image_2 = pygame.image.load('artwork/dino2.png').convert_alpha()
+        
+        self.original_images = [image_1, image_2]
+        
         self.images = [image_1, image_2]
         self.image = self.images[0]
         self.index = 0
         self.rect = self.image.get_rect()
-        self.rect.center = [100, 100]
+        self.rect.center = [400, 400]
         self.speed = random.randint(1, 10)
 
     def get_current_image(self):
@@ -38,12 +41,34 @@ class Dinosaur(pygame.sprite.Sprite):
         self.rect.center = (self.rect.center[0] , self.rect.center[1] + self.speed)
 
     def increase_size(self):
-        # TODO: increase size of dinosaur
+        center = self.rect.center
+        resized_images = []
+        for image in self.original_images:
+            resized_image = pygame.transform.smoothscale(image, (image.get_width() *2, image.get_height() *2))
+            resized_images.append(resized_image)
+        self.images = resized_images
+        image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        
+        
+        
+        
         pass
 
     def decrease_size(self):
-        # TODO: decrease size of dinosaur
-        pass
+        center = self.rect.center
+        print("kleiner")
+        print "before", center
+        resized_images = []
+        for image in self.images:
+            resized_image = pygame.transform.smoothscale(image, (image.get_width() / 2, image.get_height() / 2))
+            resized_images.append(resized_image)
+        self.images = resized_images
+        image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        print "after", center
         
         
 class Enemy(pygame.sprite.Sprite):

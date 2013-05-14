@@ -46,6 +46,10 @@ class App(cevent.CEvent):
 			self.game.dinosaur.moveup()
 		if event.key == pygame.K_DOWN:
 			self.game.dinosaur.movedown()
+		if event.key in (pygame.K_KP_MINUS, pygame.K_MINUS):
+			self.game.dinosaur.decrease_size()
+		if event.key in (pygame.K_KP_PLUS, pygame.K_PLUS):
+			self.game.dinosaur.increase_size()
 		#self.enemy.move()
 		
     def on_execute(self):

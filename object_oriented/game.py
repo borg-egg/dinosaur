@@ -25,7 +25,7 @@ class Game(object):
 			self.screen.blit(self.level.background_img, (self.background_img_x + self.level.background_img.get_width(),0))
         # TO-DO: make sure that -if necessary- the background is stitched!
         
-        #self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
+        self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
         #self.screen.blit(self.enemy.picture, self.enemy.rect)
     
     def next_step(self):
