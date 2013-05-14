@@ -33,7 +33,7 @@ class Dinosaur(pygame.sprite.Sprite):
 	def movedown(self):
 		self.rect.center = (self.rect.center[0] , self.rect.center[1] + self.speed)	
 		
-class Enemy (pygame.sprite.Sprite):
+class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.picture = pygame.image.load('artwork/Esteban3.png')
