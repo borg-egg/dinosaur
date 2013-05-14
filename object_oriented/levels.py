@@ -14,6 +14,9 @@ class Level(object):
 		self.set_up()
 		
 	def set_up(self):
+		'''
+		to be implemented by derived classes!
+		'''
 		pass
 		
 	def get_random_enemy_cls(self):
@@ -21,8 +24,8 @@ class Level(object):
 	
 	def set_background_img(self, filepath):
 		self.background_img = pygame.image.load(filepath).convert()
-	
-
+				
+			
 class WoodLevel(Level):
 	def set_up(self):
 		self.set_background_img('../artwork/Level_1_used/wood1.png')
