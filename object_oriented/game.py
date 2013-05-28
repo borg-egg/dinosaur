@@ -3,6 +3,8 @@ from levels import WoodLevel
 from spriteclasses import Dinosaur, Enemy
 import random
 
+BACKGROUND_IMAGE_SPEED = 9  # in pixel
+  
 class Game(object):
     '''
     manager of the levels, handles all the movement, collision detection etc.
@@ -14,6 +16,7 @@ class Game(object):
         self.level = None
         self.next_level()
         self.dinosaur = Dinosaur()
+        self.ran_distance = 0
         
         self.enemy = Enemy()
     def draw(self):
@@ -28,6 +31,13 @@ class Game(object):
         # TO-DO: make sure that -if necessary- the background is stitched!
         
         self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
+
+        #self.screen.blit(self.enemy.picture, self.enemy.rect)
+        
+        fontObj = pygame.font.Font('CHERC___.TTF', 32)
+        TEXT=(250,69,19)
+        textSurfaceObj = fontObj.render('Gelaufene Meter:  ' + str(self.ran_distance / 100) , True, TEXT)
+        self.screen.blit(textSurfaceObj, (self.screen.get_width()/2 - textSurfaceObj.get_width()/2, 0))
         self.screen.blit(self.enemy.picture, self.enemy.rect)
         
     
@@ -36,7 +46,8 @@ class Game(object):
         self.scroll_background()
         self.move_enemy()
         self.create_enemy_if_out_of_bounds()
-        
+        self.ran_distance += BACKGROUND_IMAGE_SPEED
+
     def move_enemy(self):
         self.enemy.move()
     def create_enemy_if_out_of_bounds(self):
@@ -47,7 +58,6 @@ class Game(object):
         self.screen.fill( (0, 0, 0) )
         
     def scroll_background(self):
-        BACKGROUND_IMAGE_SPEED = 9  # in pixel
         self.background_img_x -= BACKGROUND_IMAGE_SPEED
         if self.background_img_x < -self.level.background_img.get_width():
             self.background_img_x = 0
