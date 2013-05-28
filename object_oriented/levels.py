@@ -30,7 +30,9 @@ class WoodLevel(Level):
 	def set_up(self):
 		self.set_background_img('../artwork/Level_1_used/wood1.png')
 		
-
+class DesertLevel(Level):
+	def set_up(self):
+		self.set_background_img('../artwork/Level_2_used/desert1.png')
 
 # for testing stuff
 if __name__ == '__main__':
