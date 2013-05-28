@@ -6,6 +6,7 @@ class Game(object):
     '''
     manager of the levels, handles all the movement, collision detection etc.
     '''	
+    
     def __init__(self, screen):
         self.screen = screen
         self.level_classes = [WoodLevel]
@@ -13,6 +14,7 @@ class Game(object):
         self.level = None
         self.next_level()
         self.dinosaur = Dinosaur()
+        self.ran_distance = 0
         
        #self.enemy = Enemy()
     def draw(self):
@@ -27,6 +29,11 @@ class Game(object):
         
         self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
         #self.screen.blit(self.enemy.picture, self.enemy.rect)
+        
+        fontObj = pygame.font.Font('CHERC___.TTF', 32)
+        TEXT=(250,69,19)
+        textSurfaceObj = fontObj.render('Gelaufene Meter:  ' + str(int(self.ran_distance)) , True, TEXT)
+        self.screen.blit(textSurfaceObj, (self.screen.get_width()/2 - textSurfaceObj.get_width()/2, 0))
     
     def next_step(self):
         #self.erase_all()
