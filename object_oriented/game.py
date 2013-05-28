@@ -1,6 +1,7 @@
 import pygame
 from levels import WoodLevel
 from spriteclasses import Dinosaur, Enemy
+import random
 
 class Game(object):
     '''
@@ -16,7 +17,7 @@ class Game(object):
         self.dinosaur = Dinosaur()
         self.ran_distance = 0
         
-       #self.enemy = Enemy()
+        self.enemy = Enemy()
     def draw(self):
         '''
         paint the whole level, with moving background, dinosaur and enemies
@@ -25,6 +26,7 @@ class Game(object):
         self.screen.blit(self.level.background_img, (self.background_img_x,0))
         if abs(self.background_img_x) > self.level.background_img.get_width() - self.screen.get_width():
 			self.screen.blit(self.level.background_img, (self.background_img_x + self.level.background_img.get_width(),0))
+			
         # TO-DO: make sure that -if necessary- the background is stitched!
         
         self.screen.blit(self.dinosaur.get_current_image(), self.dinosaur.rect)
@@ -34,11 +36,16 @@ class Game(object):
         TEXT=(250,69,19)
         textSurfaceObj = fontObj.render('Gelaufene Meter:  ' + str(int(self.ran_distance)) , True, TEXT)
         self.screen.blit(textSurfaceObj, (self.screen.get_width()/2 - textSurfaceObj.get_width()/2, 0))
-    
+        self.screen.blit(self.enemy.picture, self.enemy.rect)
+            
     def next_step(self):
         #self.erase_all()
         self.scroll_background()
-    
+        self.move_enemy()
+        
+    def move_enemy(self):
+		self.enemy.move()
+		
     def erase_all(self):
         self.screen.fill( (0, 0, 0) )
         

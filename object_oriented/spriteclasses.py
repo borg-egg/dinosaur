@@ -74,10 +74,11 @@ class Dinosaur(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-		self.picture = pygame.image.load('artwork/Esteban3.png')
+		self.picture= pygame.image.load('artwork/Esteban3.png')
 		self.rect = self.picture.get_rect()
-		self.rect.center = [100, 500]
+		self.rect.center = [900, 300]
 		self.speed = random.randint(1, 10)
+		
 		
 	def move(self):
 		self.rect.center = (self.rect.center[0] - self.speed, self.rect.center[1])
