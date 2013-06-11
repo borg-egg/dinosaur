@@ -12,7 +12,8 @@ class App(cevent.CEvent):
         self._display_surf = None
         self._image_surf = None
         self.game = None
-       		
+        self.state = {'up': False, 'down': False, 'left': False, 'right': False}
+        
     def on_init(self):
         pygame.init()
         self._display_surf = pygame.display.set_mode((800,550), pygame.HWSURFACE)
@@ -21,7 +22,10 @@ class App(cevent.CEvent):
         self._image_surf = self.game.screen
     
     def on_loop(self):
-        pass
+        if self.state['right']:
+            self.game.dinosaur.moveright()
+        if self.state['left']:
+            self.game.dinosaur.moveleft()
     
     def on_render(self):
         if self.game:
@@ -36,26 +40,30 @@ class App(cevent.CEvent):
         pygame.quit()
     
     def on_key_down(self, event):
-		if event.key == pygame.K_RIGHT:
-			print "key right"
-			self.game.dinosaur.moveright()
-		if event.key == pygame.K_LEFT:
-			print "key left"
-			self.game.dinosaur.moveleft()
-		if event.key == pygame.K_UP:
-			self.game.dinosaur.moveup()
-		if event.key == pygame.K_DOWN:
-			self.game.dinosaur.movedown()
-		if event.key in (pygame.K_KP_MINUS, pygame.K_MINUS):
-			self.game.dinosaur.decrease_size()
-		if event.key in (pygame.K_KP_PLUS, pygame.K_PLUS):
-			self.game.dinosaur.increase_size()
-		#self.enemy.move()
-		
+        if event.key == pygame.K_RIGHT:
+            print "key right"
+            self.state['right'] = True
+        if event.key == pygame.K_LEFT:
+            self.state['left'] = True
+            print "key left"
+
+        if event.key == pygame.K_UP:
+            self.game.dinosaur.moveup()
+        if event.key == pygame.K_DOWN:
+            self.game.dinosaur.movedown()
+        if event.key in (pygame.K_KP_MINUS, pygame.K_MINUS):
+            self.game.dinosaur.decrease_size()
+        if event.key in (pygame.K_KP_PLUS, pygame.K_PLUS):
+            self.game.dinosaur.increase_size()
+#self.enemy.move()
+
+    def on_key_up(self, event):
+        if event.key == pygame.K_RIGHT:
+            self.state['right'] = False
     def on_execute(self):
         if self.on_init() == False:
             self._running = False
-		
+
         pygame.time.set_timer(pygame.USEREVENT, 100)
         self.register_listener(pygame.USEREVENT, self.game.dinosaur)
         while (self._running):
